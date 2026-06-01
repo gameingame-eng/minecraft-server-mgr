@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+            <TextBlock x:Name="Status" Text="Status: Idle" FontSize="24" Margin="0,0,0,10"/>
+            <Button x:Name="StartServerButton" Content="Start Server" Width="100" Margin="0,0,0,5"/>
+            <Button x:Name="StopServerButton" Content="Stop Server" Width="100" Margin="0,0,0,5"/>
+         </StackPanel>
     </Grid>
 </Window>
