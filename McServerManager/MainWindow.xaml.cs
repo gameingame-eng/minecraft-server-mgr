@@ -1,15 +1,9 @@
-﻿using System.Text;
-using System.Windows;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace McServerManager;
@@ -40,19 +34,29 @@ public partial class MainWindow : Window
     ];
 
     private int tutorialStepIndex;
-    int RamAllocation;
-    string ServerFilePath = string.Empty;
+    private int RamAllocation;
+    private string ServerFilePath = string.Empty;
+    private string ServerJarFileName = "server.jar";
+    private Process? serverProcess;
+    private readonly StringBuilder consoleBuffer = new();
+
     public MainWindow()
     {
         InitializeComponent();
-        if (FindName("ramSlider") is System.Windows.Controls.Slider rs)
+        if (FindName("ramSlider") is Slider rs)
         {
             RamAllocation = (int)rs.Value;
         }
         else
         {
-            RamAllocation = 0;
+        RamAllocation = 0;
         }
+
+        if (FindName("ServerJarNameTextBox") is System.Windows.Controls.TextBox jarNameBox)
+        {
+            ServerJarFileName = jarNameBox.Text.Trim();
+        }
+
         UpdateTutorialStep();
     }
 
@@ -92,19 +96,168 @@ public partial class MainWindow : Window
         TutorialNextButton.Content = tutorialStepIndex == tutorialSteps.Length - 1 ? "Go to Homepage" : "Next";
     }
 
+    private void AppendConsoleLine(string line)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            consoleBuffer.AppendLine(line);
+            if (FindName("ConsoleOutputTextBox") is System.Windows.Controls.TextBox consoleOutput)
+            {
+                consoleOutput.Text = consoleBuffer.ToString();
+                consoleOutput.ScrollToEnd();
+            }
+        });
+    }
+
     private async void RUnJavaAndDoyouthingy(object sender, RoutedEventArgs e)
     {
-        Status.Text = "Status: Starting server...";
-        await Task.Delay(5000);
-        Status.Text = "Status: Server is running.";
+        if (serverProcess is { HasExited: false })
+        {
+            Status.Text = "Status: Server is already running.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(ServerFilePath) || !Directory.Exists(ServerFilePath))
+        {
+            Status.Text = "Status: Pick a valid server folder first.";
+            return;
+        }
+
+        ServerJarFileName = FindName("ServerJarNameTextBox") is System.Windows.Controls.TextBox jarNameBox
+            ? jarNameBox.Text.Trim()
+            : ServerJarFileName;
+
+        if (string.IsNullOrWhiteSpace(ServerJarFileName))
+        {
+            ServerJarFileName = "server.jar";
+        }
+
+        string serverJarPath = Path.Combine(ServerFilePath, ServerJarFileName);
+        if (!File.Exists(serverJarPath))
+        {
+            Status.Text = $"Status: {ServerJarFileName} was not found in the selected folder.";
+            AppendConsoleLine($"[BlockHost] Could not start server. Missing: {serverJarPath}");
+            return;
+        }
+
+        RamAllocation = FindName("RamSlider") is Slider ramSlider ? (int)ramSlider.Value : RamAllocation;
+
+        var psi = new ProcessStartInfo
+        {
+            FileName = "java",
+            Arguments = $"-Xms{RamAllocation}G -Xmx{RamAllocation}G -jar \"{serverJarPath}\" nogui",
+            WorkingDirectory = ServerFilePath,
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            RedirectStandardInput = true,
+            CreateNoWindow = true
+        };
+
+        var process = new Process
+        {
+            StartInfo = psi,
+            EnableRaisingEvents = true
+        };
+
+        process.OutputDataReceived += (_, args) =>
+        {
+            if (args.Data != null)
+            {
+                AppendConsoleLine(args.Data);
+            }
+        };
+
+        process.ErrorDataReceived += (_, args) =>
+        {
+            if (args.Data != null)
+            {
+                AppendConsoleLine($"[stderr] {args.Data}");
+            }
+        };
+
+        process.Exited += (_, _) =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                Status.Text = "Status: Idle.";
+                AppendConsoleLine("[BlockHost] Server process exited.");
+                serverProcess = null;
+            });
+        };
+
+        try
+        {
+            Status.Text = "Status: Starting server...";
+            AppendConsoleLine("[BlockHost] Starting server...");
+
+            if (!process.Start())
+            {
+                Status.Text = "Status: Failed to start server.";
+                AppendConsoleLine("[BlockHost] Process start returned false.");
+                return;
+            }
+
+            serverProcess = process;
+            Status.Text = $"Status: Server running (PID {serverProcess.Id}).";
+            AppendConsoleLine($"[BlockHost] Server started. PID: {serverProcess.Id}");
+
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
+        }
+        catch (System.Exception ex)
+        {
+            Status.Text = "Status: Failed to start server.";
+            AppendConsoleLine($"[BlockHost] Start failed: {ex.Message}");
+        }
     }
 
     private async void PleaseStopTheServer(object sender, RoutedEventArgs e)
     {
+        if (serverProcess is not { HasExited: false })
+        {
+            Status.Text = "Status: Idle.";
+            AppendConsoleLine("[BlockHost] No running server to stop.");
+            return;
+        }
+
         Status.Text = "Status: Stopping server...";
-        await Task.Delay(5000);
-        Status.Text = "Status: Idle.";
+        AppendConsoleLine("[BlockHost] Sending stop command...");
+
+        try
+        {
+            await serverProcess.StandardInput.WriteLineAsync("stop");
+            await serverProcess.StandardInput.FlushAsync();
+
+            bool exited = await Task.Run(() => serverProcess.WaitForExit(15000));
+            if (!exited)
+            {
+                AppendConsoleLine("[BlockHost] Server did not exit in time. Killing process.");
+                serverProcess.Kill(entireProcessTree: true);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            AppendConsoleLine($"[BlockHost] Stop failed: {ex.Message}");
+            try
+            {
+                if (!serverProcess.HasExited)
+                {
+                    serverProcess.Kill(entireProcessTree: true);
+                }
+            }
+            catch
+            {
+                // Ignore secondary stop failures.
+            }
+        }
+        finally
+        {
+            Status.Text = "Status: Idle.";
+            serverProcess = null;
+        }
     }
+
     private void ChooseFolder_Click(object sender, RoutedEventArgs e)
     {
         using var dialog = new FolderBrowserDialog();
@@ -113,15 +266,15 @@ public partial class MainWindow : Window
         {
             ServerFolderTextBox.Text = dialog.SelectedPath;
             ServerFilePath = dialog.SelectedPath;
-
         }
     }
+
     private void RamSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
         if (FindName("RamLabel") is TextBlock ramLabel && sender is Slider ramSlider)
         {
-            ramLabel.Text = $"{(int)ramSlider.Value} GB";
-            
+            RamAllocation = (int)ramSlider.Value;
+            ramLabel.Text = $"{RamAllocation} GB";
         }
     }
 }
