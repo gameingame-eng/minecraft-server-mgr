@@ -534,8 +534,17 @@ public partial class MainWindow : Window
 
     private void RamSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-        ramAllocation = (int)RamSlider.Value;
-        RamLabel.Text = $"{ramAllocation} GB";
+        if (sender is not Slider ramSlider)
+        {
+            return;
+        }
+
+        ramAllocation = (int)ramSlider.Value;
+
+        if (FindName("RamLabel") is TextBlock ramLabel)
+        {
+            ramLabel.Text = $"{ramAllocation} GB";
+        }
     }
 }
 
