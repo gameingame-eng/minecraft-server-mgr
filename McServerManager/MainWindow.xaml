@@ -5,67 +5,477 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:McServerManager"
         mc:Ignorable="d"
-        Title="BlockHost" Height="450" Width="800">
-    <Grid Margin="20">
+        Title="BlockHost"
+        Height="620"
+        Width="920"
+        MinHeight="560"
+        MinWidth="820"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F6F3">
+    <Window.Resources>
+        <SolidColorBrush x:Key="TextBrush" Color="#1F2A24" />
+        <SolidColorBrush x:Key="MutedBrush" Color="#66746B" />
+        <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="BorderBrushSoft" Color="#DDE5DC" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#2F7D46" />
+        <SolidColorBrush x:Key="AccentHoverBrush" Color="#27683B" />
+        <SolidColorBrush x:Key="DangerBrush" Color="#B84A4A" />
+
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="MinWidth" Value="104" />
+            <Setter Property="Padding" Value="14,0" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource AccentHoverBrush}" />
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1F5230" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="#EEF3EE" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="10,6" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Padding" Value="14,7" />
+            <Setter Property="Margin" Value="0,0,6,0" />
+        </Style>
+
+        <Style x:Key="Panel" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="18" />
+        </Style>
+
+        <Style x:Key="SmallMutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid x:Name="WelcomeScreen" Background="#E6F0E6">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="520">
+                <Border Width="58"
+                        Height="58"
+                        CornerRadius="6"
+                        Background="#2F7D46"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,22">
+                    <Grid>
+                        <Rectangle Width="26"
+                                   Height="26"
+                                   Fill="#7BC96F"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Margin="9,9,0,0" />
+                        <Rectangle Width="26"
+                                   Height="26"
+                                   Fill="#5FAE58"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="0,0,9,9" />
+                        <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="#1F2A24"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Bottom"
+                                   Margin="15,0,0,15" />
+                        <Rectangle Width="10"
+                                   Height="10"
+                                   Fill="#1F2A24"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   Margin="0,0,15,15" />
+                    </Grid>
+                </Border>
+
+                <TextBlock Text="Welcome to BlockHost"
+                           FontSize="30"
+                           FontWeight="SemiBold"
+                           TextAlignment="Center"
+                           Margin="0,0,0,18" />
+
+                <Border Background="#FFFFFF"
+                        BorderBrush="#CFE0D0"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="22"
+                        Margin="0,0,0,18">
+                    <StackPanel>
+                        <TextBlock x:Name="TutorialStepLabel"
+                                   Text="Step 1 of 4"
+                                   Foreground="{StaticResource MutedBrush}"
+                                   FontSize="13"
+                                   Margin="0,0,0,8" />
+                        <TextBlock x:Name="TutorialTitle"
+                                   Text="Choose a server folder"
+                                   FontSize="21"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,8" />
+                        <TextBlock x:Name="TutorialBody"
+                                   Text="Pick the folder where your server files will live. This is where BlockHost will look for the server jar, world files, configs, mods, and plugins."
+                                   Style="{StaticResource SmallMutedText}"
+                                   FontSize="14"
+                                   LineHeight="20" />
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="This tutorial is just the UI flow for now. We can wire the real setup checks later."
+                           Style="{StaticResource SmallMutedText}"
+                           TextAlignment="Center"
+                           Margin="0,0,0,20" />
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button x:Name="TutorialBackButton"
+                            Content="Back"
+                            Width="92"
+                            Style="{StaticResource SecondaryButton}"
+                            IsEnabled="False"
+                            Click="TutorialBack_Click"
+                            Margin="0,0,8,0" />
+                    <Button x:Name="TutorialNextButton"
+                            Content="Next"
+                            Width="140"
+                            Click="TutorialNext_Click"
+                            Margin="0,0,8,0" />
+                    <Button Content="Skip"
+                            Width="92"
+                            Style="{StaticResource SecondaryButton}"
+                            Click="GoToHome_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid x:Name="HomePage"
+              Margin="24"
+              Visibility="Collapsed">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="Status"
-                   Grid.Row="0"
-                   Text="Status: Idle"
-                   FontSize="24"
-                   Margin="0,0,0,20" />
+        <Border Background="#E6F0E6"
+                BorderBrush="#CFE0D0"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,18">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="1" Margin="0,0,0,20">
-            <TextBlock Text="RAM Allocation"
-                       FontSize="18"
-                       Margin="0,0,0,8" />
+                <StackPanel>
+                    <TextBlock Text="Welcome to BlockHost"
+                               FontSize="22"
+                               FontWeight="SemiBold" />
+                    <TextBlock Text="Set up a Minecraft server, choose your server software, then browse compatible mods or plugins."
+                               Style="{StaticResource SmallMutedText}"
+                               Margin="0,6,0,0" />
+                </StackPanel>
 
-            <Slider x:Name="RamSlider"
-                    Minimum="1"
-                    Maximum="16"
-                    Value="4"
-                    Width="250"
-                    TickFrequency="1"
-                    IsSnapToTickEnabled="True"
-                    ValueChanged="RamSlider_ValueChanged" />
+                <Border Grid.Column="1"
+                        Background="#FFFFFF"
+                        BorderBrush="#CFE0D0"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="12,8"
+                        VerticalAlignment="Center">
+                    <TextBlock x:Name="Status"
+                               Text="Status: Idle"
+                               FontWeight="SemiBold" />
+                </Border>
+            </Grid>
+        </Border>
 
-            <TextBlock x:Name="RamLabel"
-                       Text="4 GB"
-                       Margin="0,8,0,0" />
-        </StackPanel>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Server">
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.05*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    Margin="0,0,0,20">
-            <Button x:Name="StartServerButton"
-                    Content="Start Server"
-                    Width="100"
-                    Margin="0,0,10,0"
-                    Click="RUnJavaAndDoyouthingy" />
-            <Button x:Name="StopServerButton"
-                    Content="Stop Server"
-                    Width="100"
-                    Click="PleaseStopTheServer" />
-        </StackPanel>
+                    <Border Style="{StaticResource Panel}" Margin="0,0,16,0">
+                        <StackPanel>
+                            <TextBlock Text="Server Setup"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,14" />
 
-        <StackPanel Grid.Row="3"
-                    Orientation="Horizontal">
-            <TextBox x:Name="ServerFolderTextBox"
-                     Width="300"
-                     Height="30"
-                     Margin="0,0,10,0"
-                     VerticalAlignment="Center"
-                     Text="No folder selected" />
-            <Button Content="Choose Folder"
-                    Width="120"
-                    Height="35"
-                    Click="ChooseFolder_Click" />
-        </StackPanel>
+                            <TextBlock Text="Server folder"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6" />
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="ServerFolderTextBox"
+                                         Text="No folder selected"
+                                         Margin="0,0,8,0" />
+                                <Button Grid.Column="1"
+                                        Content="Choose Folder"
+                                        Style="{StaticResource SecondaryButton}"
+                                        Click="ChooseFolder_Click" />
+                            </Grid>
+
+                            <TextBlock Text="Server software"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6" />
+                            <ComboBox x:Name="ServerSoftwareComboBox"
+                                      SelectedIndex="0"
+                                      Margin="0,0,0,8">
+                                <ComboBoxItem Content="Paper / Spigot / Bukkit - plugins" />
+                                <ComboBoxItem Content="Fabric - mods" />
+                                <ComboBoxItem Content="Forge - mods" />
+                                <ComboBoxItem Content="NeoForge - mods" />
+                                <ComboBoxItem Content="Vanilla - no add-ons" />
+                            </ComboBox>
+                            <TextBlock Text="Later, this selection can decide whether BlockHost shows plugins, mods, or no add-on browser."
+                                       Style="{StaticResource SmallMutedText}"
+                                       Margin="0,0,0,18" />
+
+                            <TextBlock Text="RAM allocation"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Slider x:Name="RamSlider"
+                                        Minimum="1"
+                                        Maximum="16"
+                                        Value="4"
+                                        TickFrequency="1"
+                                        IsSnapToTickEnabled="True"
+                                        ValueChanged="RamSlider_ValueChanged"
+                                        VerticalAlignment="Center" />
+                                <TextBlock x:Name="RamLabel"
+                                           Grid.Column="1"
+                                           Text="4 GB"
+                                           FontWeight="Bold"
+                                           Margin="14,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource Panel}">
+                        <StackPanel>
+                            <TextBlock Text="Controls"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,14" />
+                            <TextBlock Text="Start and stop actions are still wired to the current placeholder code."
+                                       Style="{StaticResource SmallMutedText}"
+                                       Margin="0,0,0,18" />
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                                <Button x:Name="StartServerButton"
+                                        Content="Start Server"
+                                        Click="RUnJavaAndDoyouthingy"
+                                        Margin="0,0,10,0" />
+                                <Button x:Name="StopServerButton"
+                                        Content="Stop Server"
+                                        Style="{StaticResource DangerButton}"
+                                        Click="PleaseStopTheServer" />
+                            </StackPanel>
+
+                            <Border Background="#F7F9F6"
+                                    BorderBrush="{StaticResource BorderBrushSoft}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="14">
+                                <StackPanel>
+                                    <TextBlock Text="Console Preview"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,8" />
+                                    <TextBlock Text="[BlockHost] Console output will show here once the server process is connected."
+                                               FontFamily="Consolas"
+                                               Foreground="{StaticResource MutedBrush}"
+                                               TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Add-ons">
+                <Grid Margin="0,16,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Style="{StaticResource Panel}" Margin="0,0,0,16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="150" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox x:Name="AddonSearchTextBox"
+                                     Text="Search Modrinth or CurseForge"
+                                     Margin="0,0,10,0" />
+                            <ComboBox x:Name="AddonSourceComboBox"
+                                      Grid.Column="1"
+                                      SelectedIndex="0"
+                                      Margin="0,0,10,0">
+                                <ComboBoxItem Content="Modrinth" />
+                                <ComboBoxItem Content="CurseForge" />
+                            </ComboBox>
+                            <Button Grid.Column="2"
+                                    Content="Search"
+                                    Style="{StaticResource SecondaryButton}" />
+                        </Grid>
+                    </Border>
+
+                    <TabControl Grid.Row="1">
+                        <TabItem Header="Plugins">
+                            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Plugins"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,8" />
+                                    <TextBlock Text="Use this tab for Paper, Spigot, or Bukkit servers. Later we can hide or disable it when Fabric, Forge, NeoForge, or Vanilla is selected."
+                                               Style="{StaticResource SmallMutedText}"
+                                               Margin="0,0,0,16" />
+                                    <UniformGrid Columns="3">
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="EssentialsX" FontWeight="SemiBold" />
+                                                <TextBlock Text="Server commands and quality-of-life tools" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="LuckPerms" FontWeight="SemiBold" />
+                                                <TextBlock Text="Permissions and groups" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12">
+                                            <StackPanel>
+                                                <TextBlock Text="WorldEdit" FontWeight="SemiBold" />
+                                                <TextBlock Text="In-game building and editing tools" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+                        </TabItem>
+
+                        <TabItem Header="Mods">
+                            <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Mods"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,8" />
+                                    <TextBlock Text="Use this tab for Fabric, Forge, or NeoForge servers. Search results can come from Modrinth and CurseForge once the API layer is added."
+                                               Style="{StaticResource SmallMutedText}"
+                                               Margin="0,0,0,16" />
+                                    <UniformGrid Columns="3">
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Fabric API" FontWeight="SemiBold" />
+                                                <TextBlock Text="Common dependency for Fabric mods" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
+                                            <StackPanel>
+                                                <TextBlock Text="Sodium" FontWeight="SemiBold" />
+                                                <TextBlock Text="Performance-focused rendering mod" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12">
+                                            <StackPanel>
+                                                <TextBlock Text="JourneyMap" FontWeight="SemiBold" />
+                                                <TextBlock Text="Map and waypoint features" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        </Grid>
     </Grid>
 </Window>
