@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -39,10 +40,18 @@ public partial class MainWindow : Window
     ];
 
     private int tutorialStepIndex;
-
+    int RamAllocation;
     public MainWindow()
     {
         InitializeComponent();
+        if (FindName("ramSlider") is System.Windows.Controls.Slider rs)
+        {
+            RamAllocation = (int)rs.Value;
+        }
+        else
+        {
+            RamAllocation = 0;
+        }
         UpdateTutorialStep();
     }
 
@@ -109,6 +118,7 @@ public partial class MainWindow : Window
         if (FindName("RamLabel") is TextBlock ramLabel && sender is Slider ramSlider)
         {
             ramLabel.Text = $"{(int)ramSlider.Value} GB";
+            
         }
     }
 }
