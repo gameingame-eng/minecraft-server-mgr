@@ -280,7 +280,9 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Style="{StaticResource Panel}" Margin="0,0,16,0">
-                        <StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel>
                             <TextBlock Text="Server Setup"
                                        FontSize="18"
                                        FontWeight="SemiBold"
@@ -302,6 +304,13 @@
                                         Style="{StaticResource SecondaryButton}"
                                         Click="ChooseFolder_Click" />
                             </Grid>
+
+                            <TextBlock Text="Server jar file name"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6" />
+                            <TextBox x:Name="ServerJarNameTextBox"
+                                     Text="server.jar"
+                                     Margin="0,0,0,16" />
 
                             <TextBlock Text="Server software"
                                        FontWeight="SemiBold"
@@ -342,7 +351,8 @@
                                            Margin="14,0,0,0"
                                            VerticalAlignment="Center" />
                             </Grid>
-                        </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Border>
 
                     <Border Grid.Column="1" Style="{StaticResource Panel}">
@@ -375,10 +385,18 @@
                                     <TextBlock Text="Console Preview"
                                                FontWeight="SemiBold"
                                                Margin="0,0,0,8" />
-                                    <TextBlock Text="[BlockHost] Console output will show here once the server process is connected."
-                                               FontFamily="Consolas"
-                                               Foreground="{DynamicResource MutedBrush}"
-                                               TextWrapping="Wrap" />
+                                    <TextBox x:Name="ConsoleOutputTextBox"
+                                             Text="[BlockHost] Console output will show here once the server process is connected."
+                                             FontFamily="Consolas"
+                                             Foreground="{DynamicResource MutedBrush}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             IsReadOnly="True"
+                                             AcceptsReturn="True"
+                                             TextWrapping="Wrap"
+                                             VerticalScrollBarVisibility="Auto"
+                                             HorizontalScrollBarVisibility="Disabled"
+                                             Height="180" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
