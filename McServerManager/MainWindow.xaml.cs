@@ -41,6 +41,7 @@ public partial class MainWindow : Window
 
     private int tutorialStepIndex;
     int RamAllocation;
+    string ServerFilePath = string.Empty;
     public MainWindow()
     {
         InitializeComponent();
@@ -111,6 +112,8 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
         {
             ServerFolderTextBox.Text = dialog.SelectedPath;
+            ServerFilePath = dialog.SelectedPath;
+
         }
     }
     private void RamSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
