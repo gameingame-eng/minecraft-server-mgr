@@ -11,12 +11,20 @@
         MinHeight="560"
         MinWidth="820"
         WindowStartupLocation="CenterScreen"
-        Background="#F4F6F3">
+        Icon="applogo/blockhost.ico"
+        Background="{DynamicResource AppBackgroundBrush}">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBrush" Color="#1F2A24" />
         <SolidColorBrush x:Key="MutedBrush" Color="#66746B" />
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F4F6F3" />
+        <SolidColorBrush x:Key="WelcomeBackgroundBrush" Color="#E6F0E6" />
+        <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#E6F0E6" />
+        <SolidColorBrush x:Key="HeaderBorderBrush" Color="#CFE0D0" />
         <SolidColorBrush x:Key="PanelBrush" Color="#FFFFFF" />
         <SolidColorBrush x:Key="BorderBrushSoft" Color="#DDE5DC" />
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="SecondaryButtonBackgroundBrush" Color="#EEF3EE" />
+        <SolidColorBrush x:Key="ConsoleBackgroundBrush" Color="#F7F9F6" />
         <SolidColorBrush x:Key="AccentBrush" Color="#2F7D46" />
         <SolidColorBrush x:Key="AccentHoverBrush" Color="#27683B" />
         <SolidColorBrush x:Key="DangerBrush" Color="#B84A4A" />
@@ -24,7 +32,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         </Style>
 
         <Style TargetType="Button">
@@ -34,8 +42,8 @@
             <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontWeight" Value="Normal" />
             <Setter Property="Foreground" Value="#FFFFFF" />
-            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
@@ -51,8 +59,8 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{StaticResource AccentHoverBrush}" />
-                                <Setter Property="BorderBrush" Value="{StaticResource AccentHoverBrush}" />
+                                <Setter Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="#1F5230" />
@@ -64,23 +72,23 @@
         </Style>
 
         <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="Background" Value="#EEF3EE" />
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SecondaryButtonBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushSoft}" />
         </Style>
 
         <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="{StaticResource DangerBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}" />
+            <Setter Property="Background" Value="{DynamicResource DangerBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DangerBrush}" />
         </Style>
 
         <Style TargetType="TextBox">
             <Setter Property="Height" Value="34" />
             <Setter Property="Padding" Value="10,6" />
             <Setter Property="FontFamily" Value="Segoe UI" />
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="Background" Value="#FFFFFF" />
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushSoft}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
@@ -89,6 +97,9 @@
             <Setter Property="Height" Value="34" />
             <Setter Property="Padding" Value="8,4" />
             <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushSoft}" />
         </Style>
 
         <Style TargetType="TabControl">
@@ -99,27 +110,30 @@
         <Style TargetType="TabItem">
             <Setter Property="FontFamily" Value="Segoe UI" />
             <Setter Property="FontWeight" Value="Normal" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
             <Setter Property="Padding" Value="14,7" />
             <Setter Property="Margin" Value="0,0,6,0" />
         </Style>
 
         <Style x:Key="Panel" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSoft}" />
+            <Setter Property="Background" Value="{DynamicResource PanelBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrushSoft}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="6" />
             <Setter Property="Padding" Value="18" />
         </Style>
 
         <Style x:Key="SmallMutedText" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource MutedBrush}" />
             <Setter Property="FontSize" Value="13" />
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
     </Window.Resources>
 
-    <Grid>
-        <Grid x:Name="WelcomeScreen" Background="#E6F0E6">
+    <Grid Background="{DynamicResource AppBackgroundBrush}">
+        <Grid x:Name="WelcomeScreen"
+              Background="{DynamicResource WelcomeBackgroundBrush}"
+              Visibility="Collapsed">
             <StackPanel HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Width="520">
@@ -163,8 +177,8 @@
                            TextAlignment="Center"
                            Margin="0,0,0,18" />
 
-                <Border Background="#FFFFFF"
-                        BorderBrush="#CFE0D0"
+                <Border Background="{DynamicResource PanelBrush}"
+                        BorderBrush="{DynamicResource HeaderBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="6"
                         Padding="22"
@@ -172,7 +186,7 @@
                     <StackPanel>
                         <TextBlock x:Name="TutorialStepLabel"
                                    Text="Step 1 of 4"
-                                   Foreground="{StaticResource MutedBrush}"
+                                   Foreground="{DynamicResource MutedBrush}"
                                    FontSize="13"
                                    Margin="0,0,0,8" />
                         <TextBlock x:Name="TutorialTitle"
@@ -216,15 +230,14 @@
         </Grid>
 
         <Grid x:Name="HomePage"
-              Margin="24"
-              Visibility="Collapsed">
+              Margin="24">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Background="#E6F0E6"
-                BorderBrush="#CFE0D0"
+        <Border Background="{DynamicResource HeaderBackgroundBrush}"
+                BorderBrush="{DynamicResource HeaderBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
                 Padding="20"
@@ -245,8 +258,8 @@
                 </StackPanel>
 
                 <Border Grid.Column="1"
-                        Background="#FFFFFF"
-                        BorderBrush="#CFE0D0"
+                        Background="{DynamicResource PanelBrush}"
+                        BorderBrush="{DynamicResource HeaderBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="6"
                         Padding="12,8"
@@ -353,8 +366,8 @@
                                         Click="PleaseStopTheServer" />
                             </StackPanel>
 
-                            <Border Background="#F7F9F6"
-                                    BorderBrush="{StaticResource BorderBrushSoft}"
+                            <Border Background="{DynamicResource ConsoleBackgroundBrush}"
+                                    BorderBrush="{DynamicResource BorderBrushSoft}"
                                     BorderThickness="1"
                                     CornerRadius="6"
                                     Padding="14">
@@ -364,7 +377,7 @@
                                                Margin="0,0,0,8" />
                                     <TextBlock Text="[BlockHost] Console output will show here once the server process is connected."
                                                FontFamily="Consolas"
-                                               Foreground="{StaticResource MutedBrush}"
+                                               Foreground="{DynamicResource MutedBrush}"
                                                TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
@@ -389,90 +402,94 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBox x:Name="AddonSearchTextBox"
-                                     Text="Search Modrinth or CurseForge"
+                                     Text="Search Modrinth"
                                      Margin="0,0,10,0" />
-                            <ComboBox x:Name="AddonSourceComboBox"
-                                      Grid.Column="1"
-                                      SelectedIndex="0"
-                                      Margin="0,0,10,0">
-                                <ComboBoxItem Content="Modrinth" />
-                                <ComboBoxItem Content="CurseForge" />
-                            </ComboBox>
+                            <TextBox x:Name="MinecraftVersionTextBox"
+                                     Grid.Column="1"
+                                     Text="1.21.1"
+                                     Margin="0,0,10,0" />
                             <Button Grid.Column="2"
                                     Content="Search"
-                                    Style="{StaticResource SecondaryButton}" />
+                                    Style="{StaticResource SecondaryButton}"
+                                    Click="SearchModrinth_Click" />
                         </Grid>
                     </Border>
 
-                    <TabControl Grid.Row="1">
+                    <TabControl x:Name="AddonKindTabControl" Grid.Row="1">
                         <TabItem Header="Plugins">
                             <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="Plugins"
-                                               FontSize="18"
-                                               FontWeight="SemiBold"
-                                               Margin="0,0,0,8" />
-                                    <TextBlock Text="Use this tab for Paper, Spigot, or Bukkit servers. Later we can hide or disable it when Fabric, Forge, NeoForge, or Vanilla is selected."
-                                               Style="{StaticResource SmallMutedText}"
-                                               Margin="0,0,0,16" />
-                                    <UniformGrid Columns="3">
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <TextBlock Text="EssentialsX" FontWeight="SemiBold" />
-                                                <TextBlock Text="Server commands and quality-of-life tools" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <TextBlock Text="LuckPerms" FontWeight="SemiBold" />
-                                                <TextBlock Text="Permissions and groups" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12">
-                                            <StackPanel>
-                                                <TextBlock Text="WorldEdit" FontWeight="SemiBold" />
-                                                <TextBlock Text="In-game building and editing tools" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                    </UniformGrid>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Plugins"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,8" />
+                                        <TextBlock Text="Use this tab for Paper, Spigot, or Bukkit servers. Search results come from Modrinth plugins."
+                                                   Style="{StaticResource SmallMutedText}"
+                                                   Margin="0,0,0,16" />
+                                    </StackPanel>
+                                    <ListBox x:Name="PluginResultsListBox"
+                                             Grid.Row="1"
+                                             MinHeight="220" />
+                                </Grid>
                             </Border>
                         </TabItem>
 
                         <TabItem Header="Mods">
                             <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
-                                <StackPanel>
-                                    <TextBlock Text="Mods"
-                                               FontSize="18"
-                                               FontWeight="SemiBold"
-                                               Margin="0,0,0,8" />
-                                    <TextBlock Text="Use this tab for Fabric, Forge, or NeoForge servers. Search results can come from Modrinth and CurseForge once the API layer is added."
-                                               Style="{StaticResource SmallMutedText}"
-                                               Margin="0,0,0,16" />
-                                    <UniformGrid Columns="3">
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <TextBlock Text="Fabric API" FontWeight="SemiBold" />
-                                                <TextBlock Text="Common dependency for Fabric mods" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,10,0">
-                                            <StackPanel>
-                                                <TextBlock Text="Sodium" FontWeight="SemiBold" />
-                                                <TextBlock Text="Performance-focused rendering mod" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border BorderBrush="{StaticResource BorderBrushSoft}" BorderThickness="1" CornerRadius="6" Padding="12">
-                                            <StackPanel>
-                                                <TextBlock Text="JourneyMap" FontWeight="SemiBold" />
-                                                <TextBlock Text="Map and waypoint features" Style="{StaticResource SmallMutedText}" Margin="0,5,0,0" />
-                                            </StackPanel>
-                                        </Border>
-                                    </UniformGrid>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Mods"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Margin="0,0,0,8" />
+                                        <TextBlock Text="Use this tab for Fabric, Forge, or NeoForge servers. Search results come from Modrinth mods."
+                                                   Style="{StaticResource SmallMutedText}"
+                                                   Margin="0,0,0,16" />
+                                    </StackPanel>
+                                    <ListBox x:Name="ModResultsListBox"
+                                             Grid.Row="1"
+                                             MinHeight="220" />
+                                </Grid>
                             </Border>
                         </TabItem>
                     </TabControl>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Settings">
+                <Grid Margin="0,16,0,0">
+                    <Border Style="{StaticResource Panel}"
+                            Width="420"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top">
+                        <StackPanel>
+                            <TextBlock Text="Settings"
+                                       FontSize="18"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,14" />
+
+                            <TextBlock Text="Theme"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,6" />
+                            <ComboBox x:Name="ThemeComboBox"
+                                      SelectionChanged="ThemeComboBox_SelectionChanged"
+                                      Margin="0,0,0,8">
+                                <ComboBoxItem Content="Light" Tag="Light" />
+                                <ComboBoxItem Content="Dark" Tag="Dark" />
+                            </ComboBox>
+                            <TextBlock Text="BlockHost will remember this choice the next time you open the app."
+                                       Style="{StaticResource SmallMutedText}" />
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </TabItem>
         </TabControl>
