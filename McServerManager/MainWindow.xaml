@@ -318,13 +318,17 @@
                             <ComboBox x:Name="ServerSoftwareComboBox"
                                       SelectedIndex="0"
                                       Margin="0,0,0,8">
-                                <ComboBoxItem Content="Paper / Spigot / Bukkit - plugins" />
-                                <ComboBoxItem Content="Fabric - mods" />
-                                <ComboBoxItem Content="Forge - mods" />
-                                <ComboBoxItem Content="NeoForge - mods" />
-                                <ComboBoxItem Content="Vanilla - no add-ons" />
+                                <ComboBoxItem Content="Paper - plugins" Tag="paper" />
+                                <ComboBoxItem Content="Fabric - mods" Tag="fabric" />
+                                <ComboBoxItem Content="Forge - mods" Tag="forge" />
+                                <ComboBoxItem Content="NeoForge - mods" Tag="neoforge" />
+                                <ComboBoxItem Content="Vanilla - no add-ons" Tag="vanilla" />
                             </ComboBox>
-                            <TextBlock Text="Later, this selection can decide whether BlockHost shows plugins, mods, or no add-on browser."
+                            <Button Content="Download Server Software"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Click="DownloadServerSoftware_Click"
+                                    Margin="0,0,0,8" />
+                            <TextBlock Text="Paper and Fabric can be downloaded here. Mods install to mods; Paper plugins install to plugins."
                                        Style="{StaticResource SmallMutedText}"
                                        Margin="0,0,0,18" />
 
@@ -408,6 +412,7 @@
                 <Grid Margin="0,16,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
@@ -433,7 +438,15 @@
                         </Grid>
                     </Border>
 
-                    <TabControl x:Name="AddonKindTabControl" Grid.Row="1">
+                    <Button Grid.Row="1"
+                            Content="Install Selected"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Style="{StaticResource SecondaryButton}"
+                            Click="InstallSelectedAddon_Click"
+                            Margin="0,0,0,8" />
+
+                    <TabControl x:Name="AddonKindTabControl" Grid.Row="2">
                         <TabItem Header="Plugins">
                             <Border Style="{StaticResource Panel}" Margin="0,16,0,0">
                                 <Grid>
