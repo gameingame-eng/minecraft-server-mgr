@@ -7,11 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>applogo\blockhost.ico</ApplicationIcon>
+    <ApplicationIcon>assets\blockhost.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="applogo\blockhost.ico" />
+    <Resource Include="assets\blockhost.ico" />
   </ItemGroup>
 
 </Project>
